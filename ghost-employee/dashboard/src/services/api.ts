@@ -24,7 +24,7 @@ function mapRole(r: any): GhostRole {
     channels: r.channels ?? [],
     active_hours_from: r.active_hours_from ?? '09:00',
     active_hours_to: r.active_hours_to ?? '18:00',
-    status: r.status ?? 'offline',
+    status: r.status ?? 'online',
     created_at: r.created_at ?? new Date().toISOString(),
   }
 }
