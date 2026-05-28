@@ -1,0 +1,13 @@
+{
+  "name": "ghost-rider-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix ghost-employee/dashboard run dev",
+    "build": "npm --prefix ghost-employee/dashboard run build",
+    "preview": "npm --prefix ghost-employee/dashboard run preview",
+    "install:dashboard": "npm --prefix ghost-employee/dashboard install",
+    "dev:backend": "python ghost-employee/backend/api.py",
+    "dev:bot": "python ghost-employee/backend/slack_bot.py"
+  }
+}

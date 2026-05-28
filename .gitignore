@@ -1,0 +1,51 @@
+# ===== SECRETS =====
+.env
+*.env
+.env.*
+!.env.example
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+*.cover
+.hypothesis/
+
+# ===== Node / Frontend =====
+node_modules/
+.npm
+dist/
+.next/
+out/
+*.tsbuildinfo
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===== IDE =====
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# ===== Docker =====
+*.log

@@ -1,0 +1,558 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ══════════════════════════════════════════════════════════════════════
+   Ghost Employee — Refined Light Theme v2
+   ══════════════════════════════════════════════════════════════════════ */
+:root {
+  --bg-base: #f5ede0;
+  --bg-card: #E8D8C4;
+  --bg-card-hover: #dfcdb5;
+  --bg-sidebar: #561C24;
+  --accent: #561C24;
+  --accent-mid: #6D2932;
+  --accent-dim: rgba(86, 28, 36, 0.05);
+  --border: rgba(86, 28, 36, 0.07);
+  --border-strong: rgba(86, 28, 36, 0.15);
+  --text-primary: #1a0a0c;
+  --text-secondary: #5a3d42;
+  --text-muted: #8d796f;
+  --text-sidebar: rgba(232, 216, 196, 0.65);
+  --text-sidebar-active: #E8D8C4;
+  --success: #2d6a4f;
+  --warning: #b5451b;
+  --error: #9b1c1c;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Outfit', sans-serif;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow-card: 0 4px 20px -2px rgba(86, 28, 36, 0.03), 0 2px 8px -1px rgba(86, 28, 36, 0.02);
+  --shadow-card-hover: 0 20px 40px -4px rgba(86, 28, 36, 0.06), 0 8px 16px -2px rgba(86, 28, 36, 0.03);
+}
+
+/* ── Reset & Body Setup ──────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+}
+
+/* ── Focus ring ─────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ── Custom Scrollbar ──────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(86, 28, 36, 0.15);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(86, 28, 36, 0.28);
+}
+
+/* ── Ambient Background Glow Blobs ───────────────────────────────────────── */
+.ambient-glow-wrapper {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.ambient-blob-1 {
+  position: absolute;
+  top: -10%;
+  left: 15%;
+  width: 45vw;
+  height: 45vw;
+  background: radial-gradient(circle, rgba(86, 28, 36, 0.08) 0%, rgba(232, 216, 196, 0.3) 50%, rgba(245, 237, 224, 0) 70%);
+  filter: blur(60px);
+  animation: float-glow-1 25s ease-in-out infinite alternate;
+}
+
+.ambient-blob-2 {
+  position: absolute;
+  bottom: -5%;
+  right: 10%;
+  width: 50vw;
+  height: 50vw;
+  background: radial-gradient(circle, rgba(109, 41, 50, 0.06) 0%, rgba(232, 216, 196, 0.4) 60%, rgba(245, 237, 224, 0) 80%);
+  filter: blur(80px);
+  animation: float-glow-2 30s ease-in-out infinite alternate;
+}
+
+@keyframes float-glow-1 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(60px, 40px) scale(1.1); }
+  100% { transform: translate(-40px, 80px) scale(0.95); }
+}
+
+@keyframes float-glow-2 {
+  0% { transform: translate(0, 0) scale(1.05); }
+  50% { transform: translate(-80px, -50px) scale(0.9); }
+  100% { transform: translate(40px, 30px) scale(1.15); }
+}
+
+/* ── Premium Glassmorphic Cards ────────────────────────────────────────── */
+.card {
+  background: rgba(255, 255, 255, 0.42) !important;
+  backdrop-filter: blur(20px) saturate(120%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(120%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  border-radius: var(--radius);
+  padding: 32px;
+  transition: all 350ms cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 8px 30px -4px rgba(86, 28, 36, 0.03),
+              inset 0 1px 0 0 rgba(255, 255, 255, 0.6);
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  background: rgba(255, 255, 255, 0.55) !important;
+  border-color: rgba(255, 255, 255, 0.75) !important;
+  box-shadow: 0 16px 40px -8px rgba(86, 28, 36, 0.06),
+              inset 0 1px 0 0 rgba(255, 255, 255, 0.8);
+  transform: translateY(-3px);
+}
+
+/* ── Larger Glassmorphic Containers ────────────────────────────────────── */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.45) !important;
+  backdrop-filter: blur(24px) saturate(130%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(130%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  border-radius: var(--radius);
+  box-shadow: 0 10px 35px -5px rgba(86, 28, 36, 0.03),
+              inset 0 1px 0 0 rgba(255, 255, 255, 0.65);
+  transition: all 350ms cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.glass-panel:hover {
+  background: rgba(255, 255, 255, 0.55) !important;
+  border-color: rgba(255, 255, 255, 0.75) !important;
+  box-shadow: 0 20px 50px -10px rgba(86, 28, 36, 0.06),
+              inset 0 1px 0 0 rgba(255, 255, 255, 0.85);
+}
+
+/* ── Typography helpers ─────────────────────────────────────────────────── */
+.metric-number {
+  font-family: var(--font-display);
+  font-size: 2.75rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.metric-label {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 12px;
+  font-weight: 500;
+}
+
+/* ── Metric card icon container ─────────────────────────────────────────── */
+.metric-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--accent-dim);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+/* ── Skeleton shimmer ───────────────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, #E8D8C4 25%, #dfcdb5 50%, #E8D8C4 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s infinite;
+  border-radius: 6px;
+}
+
+/* ── Pulse dot (LIVE badge) ─────────────────────────────────────────────── */
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0   rgba(45, 106, 79, 0.5); }
+  100% { box-shadow: 0 0 0 6px rgba(45, 106, 79, 0); }
+}
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+  animation: pulse-ring 1.8s cubic-bezier(0.25, 0, 0, 1) infinite;
+  flex-shrink: 0;
+}
+
+/* ── Status badges ──────────────────────────────────────────────────────── */
+.badge-success {
+  background: rgba(45, 106, 79, 0.08);
+  color: var(--success);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-weight: 500;
+  text-transform: capitalize;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+.badge-warning {
+  background: rgba(181, 69, 27, 0.08);
+  color: var(--warning);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-weight: 500;
+  text-transform: capitalize;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+.badge-error {
+  background: rgba(155, 28, 28, 0.08);
+  color: var(--error);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-weight: 500;
+  text-transform: capitalize;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+
+/* ── Error / warning banner ─────────────────────────────────────────────── */
+.banner-error {
+  background: rgba(155, 28, 28, 0.05);
+  border: 1px solid rgba(155, 28, 28, 0.15);
+  border-radius: var(--radius-sm);
+  color: #9b1c1c;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 500;
+}
+
+.banner-error .dismiss-btn {
+  background: none;
+  border: none;
+  color: #9b1c1c;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: text-decoration 150ms ease;
+}
+.banner-error .dismiss-btn:hover {
+  text-decoration: underline;
+}
+
+/* ── Primary Button ─────────────────────────────────────────────────────── */
+.btn-accent {
+  background: var(--accent);
+  color: #E8D8C4;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 12px 24px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  letter-spacing: -0.01em;
+}
+.btn-accent:hover {
+  background: var(--accent-mid);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(86, 28, 36, 0.2);
+}
+.btn-accent:active {
+  transform: translateY(0);
+}
+.btn-accent:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ── Secondary Button ──────────────────────────────────────────────────── */
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  color: var(--text-primary);
+  border-radius: var(--radius-sm);
+  padding: 12px 24px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 200ms ease;
+  letter-spacing: -0.01em;
+}
+.btn-secondary:hover {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+}
+
+/* ── Toggle switch ──────────────────────────────────────────────────────── */
+.toggle-track {
+  width: 44px;
+  height: 24px;
+  border-radius: 12px;
+  background: rgba(86, 28, 36, 0.06);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  position: relative;
+  transition: background 300ms ease, border-color 300ms ease;
+  flex-shrink: 0;
+}
+.toggle-track.on {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.toggle-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  transition: transform 300ms ease, background 300ms ease;
+}
+.toggle-track.on .toggle-thumb {
+  transform: translateX(20px);
+  background: #E8D8C4;
+}
+
+/* ── Nav item (Sidebar) ─────────────────────────────────────────────────── */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 18px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  font-size: 14px;
+  font-family: var(--font-sans);
+  color: var(--text-sidebar);
+  font-weight: 400;
+  transition: all 200ms ease;
+  cursor: pointer;
+  margin: 2px 14px;
+  border-left: 3px solid transparent;
+  letter-spacing: 0;
+}
+.nav-item:hover {
+  background: rgba(232, 216, 196, 0.08);
+  color: var(--text-sidebar-active);
+}
+.nav-item.active {
+  background: rgba(232, 216, 196, 0.12);
+  color: var(--text-sidebar-active);
+  font-weight: 500;
+  border-left-color: var(--text-sidebar-active);
+}
+
+/* ── Filter pill ────────────────────────────────────────────────────────── */
+.filter-pill {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+.filter-pill:hover {
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+  background: rgba(86, 28, 36, 0.03);
+}
+.filter-pill.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #E8D8C4;
+}
+
+/* ── Page header ────────────────────────────────────────────────────────── */
+.page-title {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+.page-subtitle {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  color: var(--text-muted);
+  margin-top: 6px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+.page-divider {
+  border: none;
+  height: 1px;
+  background: var(--border);
+  margin-top: 20px;
+}
+
+/* ── Table ──────────────────────────────────────────────────────────────── */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.data-table th {
+  padding: 16px 24px;
+  text-align: left;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  background: var(--bg-card);
+}
+.data-table td {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.data-table tbody tr {
+  background: #ffffff;
+  transition: background 200ms ease;
+}
+.data-table tbody tr:hover {
+  background: #fdf8f4;
+}
+.data-table tbody tr.expanded {
+  background: #f9f3ec;
+  border-left: 3px solid var(--accent);
+}
+
+/* ── Telemetry Ticker Marquee ── */
+.marquee-container {
+  overflow: hidden;
+  white-space: nowrap;
+  display: flex;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 0;
+  width: 100%;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.marquee-content {
+  display: inline-flex;
+  animation: marquee 24s linear infinite;
+  gap: 3rem;
+}
+
+@keyframes marquee {
+  0%   { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.marquee-item {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.marquee-item.active {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* ── Lenis Smooth Scrolling ───────────────────────────────────────────── */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* ── Background Keyframe Animations (kept for GSAP compat) ── */
+@keyframes float-slow {
+  0%, 100% { transform: translate(0px, 0px) scale(1); }
+  50% { transform: translate(60px, -80px) scale(1.15); }
+}
+
+@keyframes float-slow-reverse {
+  0%, 100% { transform: translate(0px, 0px) scale(1.05); }
+  50% { transform: translate(-80px, 60px) scale(0.9); }
+}
+
+@keyframes float-slow-alternate {
+  0%, 100% { transform: translate(0px, 0px) scale(0.95); }
+  50% { transform: translate(50px, 50px) scale(1.1); }
+}

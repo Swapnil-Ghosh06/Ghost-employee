@@ -1,0 +1,9 @@
+slack-bolt
+aiohttp
+anthropic
+asyncpg
+fastapi
+uvicorn
+pygithub
+python-dotenv
+redis
