@@ -131,7 +131,21 @@ async def handle_agent_request(payload: dict, client: AsyncWebClient) -> None:
     incoming_message = payload["text"]
     thread_context = [m.get("text", "") for m in payload.get("thread_context", [])]
 
-    role_description = os.environ.get("GHOST_ROLE", "You are a helpful AI assistant.")
+    # Initialize connection pool
+    pool = await _get_pool()
+
+    # Dynamic domain isolation using PostgreSQL JSONB channels lookup
+    role_description = "You are a helpful AI assistant."
+    try:
+        async with pool.acquire() as conn:
+            row = await conn.fetchrow(
+                "SELECT description FROM roles WHERE channels ? $1 LIMIT 1",
+                channel_id,
+            )
+            if row and row["description"]:
+                role_description = row["description"]
+    except Exception as exc:
+        logger.warning("Could not fetch dynamic role description: %s", exc)
 
     # 1. Agent decides which tool to use
     decision = run_agent(role_description, incoming_message, thread_context)
@@ -142,7 +156,6 @@ async def handle_agent_request(payload: dict, client: AsyncWebClient) -> None:
     logger.info("Agent decided: tool=%s params=%s", tool_name, params)
 
     # 2. Run the tool
-    pool = await _get_pool()
     result = await _dispatch_tool(tool_name, params, client, pool, channel_id, thread_ts)
 
     print(f"[RESULT]   output={result.output!r}  error={result.error!r}  tokens={result.tokens_used}")

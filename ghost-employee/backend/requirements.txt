@@ -1,6 +1,6 @@
 slack-bolt
 aiohttp
-anthropic
+google-generativeai
 asyncpg
 fastapi
 uvicorn

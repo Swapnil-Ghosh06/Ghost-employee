@@ -1,11 +1,15 @@
 import json
 import logging
-import anthropic
+import os
+import google.generativeai as genai
 from dotenv import load_dotenv
 
 load_dotenv()
 
 logger = logging.getLogger(__name__)
+
+# Configure the Gemini API securely
+genai.configure(api_key=os.environ.get("GEMINI_API_KEY", ""))
 
 VALID_TOOLS = {
     "reply_slack",
@@ -24,8 +28,6 @@ _JSON_INSTRUCTIONS = (
     "Do not include any explanation, markdown, or text outside the JSON object."
 )
 
-_client = anthropic.Anthropic()
-
 
 def run_agent(
     role_description: str,
@@ -33,7 +35,7 @@ def run_agent(
     thread_context: list[str],
 ) -> dict:
     """
-    Call Claude and return a tool-dispatch dict: {"tool": "<name>", "params": {...}}.
+    Call Gemini and return a tool-dispatch dict: {"tool": "<name>", "params": {...}}.
     Falls back to ask_clarification if the response is not valid JSON.
     """
     context_block = ""
@@ -47,24 +49,20 @@ def run_agent(
         "Choose the right tool and respond with ONLY the JSON object."
     )
 
-    system = [
-        {
-            "type": "text",
-            "text": f"{role_description}\n\n{_JSON_INSTRUCTIONS}",
-            "cache_control": {"type": "ephemeral"},
-        }
-    ]
+    full_system_instruction = f"{role_description}\n\n{_JSON_INSTRUCTIONS}"
 
     try:
-        response = _client.messages.create(
-            model="claude-sonnet-4-20250514",
-            max_tokens=512,
-            system=system,
-            messages=[{"role": "user", "content": user_content}],
+        model = genai.GenerativeModel(
+            model_name="gemini-1.5-flash",
+            system_instruction=full_system_instruction,
         )
-        raw = response.content[0].text.strip()
+        response = model.generate_content(
+            user_content,
+            generation_config={"response_mime_type": "application/json"},
+        )
+        raw = response.text.strip()
     except Exception as exc:
-        logger.error("Claude API call failed: %s", exc)
+        logger.error("Gemini API call failed: %s", exc)
         return {
             "tool": "ask_clarification",
             "params": {"reason": f"API error: {exc}"},
@@ -87,3 +85,4 @@ def run_agent(
                 "raw_response": raw,
             },
         }
+

@@ -288,22 +288,19 @@ async def generate_role_description(body: DescriptionRequest):
     if not role_name:
         raise HTTPException(status_code=400, detail="Role name is required.")
     try:
-        from anthropic import Anthropic
-        client = Anthropic()
+        import google.generativeai as genai
+        genai.configure(api_key=os.environ.get("GEMINI_API_KEY", ""))
+        model = genai.GenerativeModel(model_name="gemini-1.5-flash")
         prompt = (
             f"You are the Ghost Employee platform. Generate a concise, clear, and action-oriented role description for a new AI Ghost Employee "
             f"named '{role_name}'. Write 2-3 sentences outlining their typical responsibilities, standard channels they should monitor, and "
             f"how they should assist the team. Do not include any greeting, intro, or markdown. Start directly with 'You are a...'"
         )
-        response = client.messages.create(
-            model="claude-sonnet-4-20250514",
-            max_tokens=256,
-            messages=[{"role": "user", "content": prompt}],
-        )
-        description = response.content[0].text.strip()
+        response = model.generate_content(prompt)
+        description = response.text.strip()
         return {"description": description}
     except Exception as exc:
-        logger.error("Failed to generate description via Anthropic: %s", exc)
+        logger.error("Failed to generate description via Gemini: %s", exc)
         fallback = get_fallback_description(role_name)
         return {"description": fallback}
 
