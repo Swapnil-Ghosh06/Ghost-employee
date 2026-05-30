@@ -3,6 +3,7 @@ import { CheckSquare, DollarSign, Clock } from 'lucide-react'
 import MetricCard from '@/components/MetricCard'
 import ActivityLog from '@/components/ActivityLog'
 import TaskQueue from '@/components/TaskQueue'
+import CoWorkTerminal from '@/components/CoWorkTerminal'
 import { getStats, getTasks, getMockStats, getMockTasks } from '@/services/api'
 import type { Stats, Task, LogEntry } from '@/types'
 import gsap from 'gsap'
@@ -246,6 +247,9 @@ export default function Dashboard() {
           loading={loading}
         />
       </div>
+
+      {/* ── Co-Work Task Assignment Terminal ── */}
+      <CoWorkTerminal onTaskCompleted={fetchData} />
 
       {/* ── Content Grid (Activity Log + Task Queue) ── */}
       <div

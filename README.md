@@ -1,6 +1,8 @@
-# 👻 Ghost Employee (Ghost Rider Platform)
+# 👻 Ghost Employee (Ghost Rider Workspace)
 
 > **Deploy, monitor, and coordinate autonomous virtual teammates ("Ghost Employees") directly inside your team's workspace.**
+
+This is the main monorepo workspace for **Ghost Employee** (code-named *Ghost Rider*).
 
 ---
 
@@ -16,7 +18,7 @@
 
 ## 🌌 Introduction & Vision
 
-**Ghost Employee** (code-named *Ghost Rider*) is a next-generation AI agent orchestration platform designed to bridge the gap between team communication channels and automated execution environments. 
+**Ghost Employee** is a next-generation AI agent orchestration platform designed to bridge the gap between team communication channels and automated execution environments. 
 
 Rather than building simple, single-purpose Slack slash commands or passive notification feeds, **Ghost Employee** empowers you to spin up fully autonomous virtual teammates. Each agent is defined with a distinct **Role**, operates within designated Slack channels, and is armed with structured tools allowing it to run database queries, compose software scripts, file GitHub issues, retrieve past task context, or request clarification—all from normal Slack conversations.
 
@@ -130,21 +132,37 @@ ghost-employee/
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Workspace Commands
 
-### 📦 Prerequisites
-*   **Python 3.10+** (if running backend locally)
-*   **Node.js 18+** & **npm** (if running frontend locally)
-*   **Docker Desktop** (recommended, includes PostgreSQL and Redis)
+A `package.json` file is configured at the workspace root to orchestrate both services from a single location:
+
+```bash
+# Install dashboard dependencies
+npm run install:dashboard
+
+# Start the dashboard (React + Vite)
+npm run dev
+
+# Launch the FastAPI REST Backend
+npm run dev:backend
+
+# Launch the Slack Bot Client listener
+npm run dev:bot
+
+# Build dashboard for production
+npm run build
+```
 
 ---
+
+## 🚀 Getting Started
 
 ### Option A: Standard Local Setup (Recommended for Dev)
 
 #### 1. Configure the Environment
-Create a copy of `.env.example` inside the `backend` directory and name it `.env`:
+Create a copy of `.env.example` inside the `ghost-employee/backend` directory and name it `.env`:
 ```bash
-cp backend/.env.example backend/.env
+cp ghost-employee/backend/.env.example ghost-employee/backend/.env
 ```
 Fill in the configuration details inside the file:
 ```env
@@ -171,7 +189,7 @@ docker-compose up -d postgres redis
 #### 3. Setup the Python Backend
 Initialize a virtual environment, install dependencies, and launch the services:
 ```bash
-cd backend
+cd ghost-employee/backend
 python -m venv venv
 source venv/bin/activate  # On Windows, use: venv\Scripts\activate
 
@@ -192,7 +210,7 @@ python slack_bot.py
 #### 4. Setup the Frontend Dashboard
 Navigate to the dashboard directory, install dependencies, and run the Vite compiler:
 ```bash
-cd dashboard
+cd ../dashboard
 npm install
 npm run dev
 ```
@@ -205,7 +223,7 @@ Open [http://localhost:5173](http://localhost:5173) in your browser to view the 
 To run the entire system—including the databases, python agent, API gateway, and dashboard—with a single command:
 
 ```bash
-# Verify your backend/.env variables are fully set up
+# Verify your ghost-employee/backend/.env variables are fully set up
 docker-compose up --build -d
 ```
 The stack will spin up:
@@ -216,9 +234,9 @@ The stack will spin up:
 
 ---
 
-## 📡 API Reference endpoints
+## 📡 API Reference Endpoints
 
-The FastAPI backend exposes several telemetry and configuration routes used by the React Dashboard (available on `http://localhost:8000`):
+The FastAPI backend exposes several telemetry and configuration routes used by the React Dashboard:
 
 *   `GET /roles` — Fetches list of all active Ghost Employees.
 *   `POST /roles` — Instantiates a brand-new Ghost Employee.
@@ -257,16 +275,7 @@ The frontend has been built under premium visual principles tailored for an high
 
 If you're in a rush to prototype new features or demonstrate the app at an event, you can run in **Hackathon Mode**. 
 
-The frontend's API service (`dashboard/src/services/api.ts`) contains **automatic, local mock fallbacks**. If the Python API gateway goes offline, the dashboard gracefully cascades into an internal simulation engine:
-*   Generates interactive, rich terminal checklists.
-*   Simulates multi-step planning tasks.
-*   Populates mock financial graphs using Recharts.
-*   Renders sample database SQL reports and typescript files dynamically.
-
-*To build custom features:*
-1.  Add new tool definitions inside `backend/tools.py`.
-2.  Update the Claude agent prompt schema in `backend/agent.py`.
-3.  Add component controls inside `dashboard/src/components/`.
+The frontend's API service (`ghost-employee/dashboard/src/services/api.ts`) contains **automatic, local mock fallbacks**. If the Python API gateway goes offline, the dashboard gracefully cascades into an internal simulation engine.
 
 ---
 
